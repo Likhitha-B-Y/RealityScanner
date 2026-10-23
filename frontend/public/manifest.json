@@ -1,0 +1,16 @@
+{
+  "short_name": "RealityScanner",
+  "name": "Reality Scanner — Instant Civic Issue Perception",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='192' height='192' viewBox='0 0 192 192'><rect width='192' height='192' rx='32' fill='%230f172a'/><circle cx='96' cy='96' r='48' fill='%2306b6d4'/></svg>",
+      "type": "image/svg+xml",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "display": "standalone",
+  "orientation": "portrait"
+}

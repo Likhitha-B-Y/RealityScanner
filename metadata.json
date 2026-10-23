@@ -1,0 +1,6 @@
+{
+  "name": "Reality Scanner",
+  "description": "Mobile-first civic scanner that transforms photos of civic issues into verified, deduplicated complaints with zero forms.",
+  "requestFramePermissions": ["camera", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

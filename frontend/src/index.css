@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@layer utilities {
+  /* Hide scrollbar for clean horizontal tab bars */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Custom Leaflet Map styling adjustments */
+.leaflet-container {
+  font-family: inherit;
+  background-color: #020617;
+}
+
+.custom-map-marker {
+  background: transparent;
+  border: none;
+}

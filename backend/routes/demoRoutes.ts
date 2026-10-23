@@ -1,0 +1,208 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import { Router } from 'express';
+
+export const demoRouter = Router();
+
+// 8 curated test fixtures for hackathon judges
+export const DEMO_SCENARIOS = [
+  {
+    id: 'demo-pothole-1',
+    label: '1. Pothole (Angle A - 100ft Road)',
+    subtitle: 'Primary discovery scan: deep carriageway crater with exposed aggregate',
+    issue_type: 'pothole',
+    category: 'road',
+    latitude: 12.97825,
+    longitude: 77.64052,
+    address: '100 Feet Road, near 12th Main, Indiranagar',
+    landmark: 'Opposite Toit Brewpub & Metro Pillar 84',
+    is_civic_issue: true,
+    needs_better_photo: false,
+    severity_factors: {
+      hazard_to_life: 4.6,
+      affected_footfall_or_traffic: 4.8,
+      size_or_extent: 3.8,
+      weather_escalation_risk: 3.5,
+    },
+    visible_hazards: ['Live traffic lane', 'Two-wheeler rim damage risk', 'Loose gravel skidding'],
+    estimated_dimensions: 'approx. 72cm diameter, 11cm depth',
+    primary_title: 'Deep Carriageway Pothole with Exposed Aggregate',
+    detailed_description:
+      'Substantial circular crater spanning the main westbound traffic lane. Broken asphalt chunks and sharp perimeter edges pose acute hazard to commuters.',
+  },
+  {
+    id: 'demo-pothole-2-duplicate',
+    label: '2. Pothole (Angle B - Duplicate Moat)',
+    subtitle: 'Same crater captured 16m away: triggers Stage C Multi-Signal Duplicate Match',
+    issue_type: 'pothole',
+    category: 'duplicate_test',
+    latitude: 12.97835,
+    longitude: 77.64056,
+    address: '100 Feet Road, 12th Main Intersection, Indiranagar',
+    landmark: 'Near Metro Pillar 84',
+    is_civic_issue: true,
+    needs_better_photo: false,
+    severity_factors: {
+      hazard_to_life: 4.5,
+      affected_footfall_or_traffic: 4.7,
+      size_or_extent: 3.6,
+      weather_escalation_risk: 3.4,
+    },
+    visible_hazards: ['Live carriageway', 'Two-wheeler hazard'],
+    estimated_dimensions: 'approx. 70cm diameter, 10cm depth',
+    primary_title: 'Severe Road Depression on 100ft Road',
+    detailed_description:
+      'Road depression matching existing ticket #REP-BLR-001 within 16 meters. High visual and geospatial correlation.',
+  },
+  {
+    id: 'demo-open-manhole-p1',
+    label: '3. Open Manhole (P1 Critical Alert)',
+    subtitle: 'Severe life hazard: missing chamber cover adjacent to pedestrian crosswalk',
+    issue_type: 'open_manhole',
+    category: 'emergency',
+    latitude: 12.9791,
+    longitude: 77.6432,
+    address: 'CMH Road, opposite Metro Pillar 142, Indiranagar',
+    landmark: 'Near Indiranagar Metro Station Exit B',
+    is_civic_issue: true,
+    needs_better_photo: false,
+    severity_factors: {
+      hazard_to_life: 5.0,
+      affected_footfall_or_traffic: 5.0,
+      size_or_extent: 4.8,
+      weather_escalation_risk: 4.9,
+    },
+    visible_hazards: ['3-meter fall void', 'Near school zone', 'Severe fatality hazard at night'],
+    estimated_dimensions: 'approx. 60cm diameter circular opening',
+    primary_title: 'UNCOVERED SEWAGE MANHOLE ON LIVE CARRIAGEWAY',
+    detailed_description:
+      'Inspection chamber cover completely dislodged. Open void with active sewer flow directly in pedestrian walking path.',
+  },
+  {
+    id: 'demo-garbage-overflow',
+    label: '4. Garbage Overflow (Sanitation)',
+    subtitle: 'Secondary dump overflow spilling 4m across pedestrian sidewalk',
+    issue_type: 'garbage_overflow',
+    category: 'sanitation',
+    latitude: 12.9765,
+    longitude: 77.6385,
+    address: 'Thippasandra Main Road, near Post Office',
+    landmark: 'Old Market Square',
+    is_civic_issue: true,
+    needs_better_photo: false,
+    severity_factors: {
+      hazard_to_life: 2.5,
+      affected_footfall_or_traffic: 4.4,
+      size_or_extent: 4.2,
+      weather_escalation_risk: 4.0,
+    },
+    visible_hazards: ['Pedestrian obstruction', 'Stray animal vector', 'Drain inlet blockage'],
+    estimated_dimensions: 'Mound spanning ~4.5m x 2m',
+    primary_title: 'Overflowing Municipal Dumpster Spilling into Street',
+    detailed_description:
+      'Uncollected commercial wet waste spilling across footpath onto the asphalt, creating noxious odors and forcing pedestrians into vehicle traffic.',
+  },
+  {
+    id: 'demo-broken-streetlight',
+    label: '5. Broken Streetlight (Electrical)',
+    subtitle: 'Exposed wiring junction at base; unlit intersection',
+    issue_type: 'broken_streetlight',
+    category: 'electrical',
+    latitude: 12.9812,
+    longitude: 77.6421,
+    address: '12th Main Road, near Defence Colony Gate',
+    landmark: 'Defence Colony 3rd Cross',
+    is_civic_issue: true,
+    needs_better_photo: false,
+    severity_factors: {
+      hazard_to_life: 4.2,
+      affected_footfall_or_traffic: 3.8,
+      size_or_extent: 2.5,
+      weather_escalation_risk: 4.5,
+    },
+    visible_hazards: ['Exposed 230V live wire junction', 'Complete corridor blackout', 'Rain electrocution danger'],
+    estimated_dimensions: 'Streetlight pole height ~7m, base cover missing',
+    primary_title: 'Unlit Streetlight Fixture with Exposed Junction Box Wires',
+    detailed_description:
+      'Streetlight fixture completely unlit with rusted metal inspection cover detached at ground level, exposing electrical terminal blocks.',
+  },
+  {
+    id: 'demo-blurry-photo',
+    label: '6. Blurry Photo (Stage A Retake)',
+    subtitle: 'Simulates low-light blur: AI refuses to guess & guides citizen',
+    issue_type: 'other',
+    category: 'refusal_test',
+    latitude: 12.9775,
+    longitude: 77.6395,
+    address: 'Indiranagar 100ft Road',
+    is_civic_issue: true,
+    needs_better_photo: true,
+    refusal_reason:
+      'Image is out of focus and camera lens motion blurred the asphalt texture. Please hold phone steady, turn on the flashlight, and retake from 1.5 meters away.',
+    severity_factors: {
+      hazard_to_life: 0,
+      affected_footfall_or_traffic: 0,
+      size_or_extent: 0,
+      weather_escalation_risk: 0,
+    },
+    visible_hazards: [],
+    estimated_dimensions: 'Unverifiable due to motion blur',
+    primary_title: 'Uncertain Image Quality — Retake Recommended',
+    detailed_description: 'Visual clarity insufficient to determine defect characteristics or severity.',
+  },
+  {
+    id: 'demo-screenshot-fraud',
+    label: '7. Reused Screenshot (Stage D Anti-Fraud)',
+    subtitle: 'Simulates screenshot artifact / mock GPS: flagged by Evidence Audit',
+    issue_type: 'pothole',
+    category: 'fraud_test',
+    latitude: 12.975,
+    longitude: 77.635,
+    address: 'Simulated Remote Coordinate',
+    is_civic_issue: true,
+    needs_better_photo: false,
+    isScreenshotCandidate: true,
+    severity_factors: {
+      hazard_to_life: 3.0,
+      affected_footfall_or_traffic: 3.0,
+      size_or_extent: 2.5,
+      weather_escalation_risk: 2.0,
+    },
+    visible_hazards: ['Flagged: Image has screenshot UI status bar artifacts'],
+    estimated_dimensions: 'N/A',
+    primary_title: 'Suspicious Capture: Screenshot Signature Detected',
+    detailed_description:
+      'Stage D Anti-Fraud engine detected screenshot raster dimensions and absent sensor metadata.',
+  },
+  {
+    id: 'demo-non-civic',
+    label: '8. Non-Civic Photo (Indoor / Cat)',
+    subtitle: 'Simulates selfie/pet photo: Stage A rejects non-public scenes',
+    issue_type: 'other',
+    category: 'rejection_test',
+    latitude: 12.9784,
+    longitude: 77.6408,
+    address: 'Private Residence Interior',
+    is_civic_issue: false,
+    needs_better_photo: false,
+    refusal_reason:
+      'This image does not appear to be a public infrastructure or municipal defect. Reality Scanner is dedicated to civic roads, sanitation, lighting, and public safety.',
+    severity_factors: {
+      hazard_to_life: 0,
+      affected_footfall_or_traffic: 0,
+      size_or_extent: 0,
+      weather_escalation_risk: 0,
+    },
+    visible_hazards: [],
+    estimated_dimensions: 'N/A',
+    primary_title: 'Non-Civic Content Rejected',
+    detailed_description: 'Subject does not depict public road, water, electrical, or sanitation infrastructure.',
+  },
+];
+
+demoRouter.get('/scenarios', (_req, res) => {
+  res.json({ scenarios: DEMO_SCENARIOS });
+});
