@@ -204,6 +204,11 @@ export default function App() {
     }
   };
 
+  const handleProceedAsNew = () => {
+    // Keep current scan result as a distinct ticket flow
+    // User can still submit via ComplaintPreview
+  };
+
   // Upvote an existing report from tracker
   const handleUpvoteReport = async (id: string) => {
     const res = await api.upvoteReport(id);
@@ -213,109 +218,122 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950">
+    <div className="min-h-screen text-slate-100 flex flex-col font-sans selection:bg-cyan-400/80 selection:text-slate-950">
       {/* Offline Alert Banner */}
       {!isOnline && (
-        <div className="w-full bg-amber-500/20 border-b border-amber-500/40 px-4 py-2 text-center text-xs text-amber-300 font-mono flex items-center justify-center gap-2">
+        <div className="w-full bg-amber-500/15 border-b border-amber-400/40 px-4 py-2 text-center text-xs text-amber-200 font-mono flex items-center justify-center gap-2">
           <WifiOff className="w-4 h-4" />
-          <span>Offline Mode Active · Reports will queue in IndexedDB and sync when online</span>
+          <span>Offline mode · Reports will queue and sync automatically when connection returns</span>
         </div>
       )}
 
-      {/* Top Bar Contract (Brand Zone · Nav Zone · 1 Action Zone) */}
-      <header className="sticky top-0 z-40 w-full bg-slate-950/85 backdrop-blur-md border-b border-slate-800/80 px-4 sm:px-8 py-3.5 flex items-center justify-between gap-8">
-        {/* Zone 1: Single text element wordmark */}
-        <button
-          onClick={() => {
-            setActiveTab('scan');
-            setScanResult(null);
-          }}
-          className="text-lg font-black tracking-tight text-white whitespace-nowrap shrink-0 flex items-center gap-2"
-        >
-          <span className="w-2.5 h-2.5 rounded-full bg-cyan-400" />
-          <span>Reality Scanner</span>
-        </button>
-
-        {/* Zone 2: 4-5 Clean single-line nav links (Desktop) */}
-        <nav className="hidden md:flex items-center gap-6 text-xs font-semibold tracking-wide text-slate-400">
+      {/* Premium Top Bar */}
+      <header className="sticky top-0 z-40 w-full glass-panel border-x-0 border-t-0">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-6">
           <button
             onClick={() => {
               setActiveTab('scan');
               setScanResult(null);
             }}
-            className={`whitespace-nowrap shrink-0 transition-colors ${
-              activeTab === 'scan' ? 'text-cyan-400' : 'hover:text-slate-200'
-            }`}
+            className="flex items-center gap-2.5 group"
           >
-            Camera Scanner
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-300"></span>
+            </span>
+            <div className="flex flex-col leading-tight">
+              <span className="text-sm font-semibold tracking-tight text-white">Reality Scanner</span>
+              <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-slate-500">Civic Intelligence</span>
+            </div>
           </button>
-          <button
-            onClick={() => setActiveTab('map')}
-            className={`whitespace-nowrap shrink-0 transition-colors ${
-              activeTab === 'map' ? 'text-cyan-400' : 'hover:text-slate-200'
-            }`}
-          >
-            Ward 112 Map
-          </button>
-          <button
-            onClick={() => {
-              if (!activeTrackedReport && allReports.length > 0) {
-                setActiveTrackedReport(allReports[0]);
-              }
-              setActiveTab('tracker');
-            }}
-            className={`whitespace-nowrap shrink-0 transition-colors ${
-              activeTab === 'tracker' ? 'text-cyan-400' : 'hover:text-slate-200'
-            }`}
-          >
-            Ticket Tracker
-          </button>
-          <button
-            onClick={() => setActiveTab('authority')}
-            className={`whitespace-nowrap shrink-0 transition-colors ${
-              activeTab === 'authority' ? 'text-cyan-400' : 'hover:text-slate-200'
-            }`}
-          >
-            Authority Command
-          </button>
-          <button
-            onClick={() => setActiveTab('impact')}
-            className={`whitespace-nowrap shrink-0 transition-colors ${
-              activeTab === 'impact' ? 'text-cyan-400' : 'hover:text-slate-200'
-            }`}
-          >
-            Impact & Scale
-          </button>
-        </nav>
 
-        {/* Zone 3: 1 Primary Action */}
-        <div className="flex items-center gap-3 shrink-0">
-          <button
-            onClick={() => setIsDemoSheetOpen(true)}
-            className="px-3.5 py-1.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 text-xs font-semibold flex items-center gap-1.5 transition-all whitespace-nowrap shrink-0"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Judge Demo Fixtures (8)</span>
-          </button>
+          <nav className="hidden lg:flex items-center gap-1 rounded-full bg-slate-950/60 border border-slate-800/80 p-1">
+            {[
+              { id: 'scan' as NavigationTab, label: 'Report Issue' },
+              { id: 'map' as NavigationTab, label: 'Ward Map' },
+              { id: 'tracker' as NavigationTab, label: 'Ticket Tracker' },
+              { id: 'authority' as NavigationTab, label: 'Authority' },
+              { id: 'impact' as NavigationTab, label: 'Impact' },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  setActiveTab(item.id);
+                  if (item.id === 'scan') setScanResult(null);
+                  if (item.id === 'tracker' && !activeTrackedReport && allReports.length > 0) {
+                    setActiveTrackedReport(allReports[0]);
+                  }
+                }}
+                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  activeTab === item.id
+                    ? 'bg-gradient-to-r from-cyan-400/90 to-emerald-400/90 text-slate-950 shadow-[0_30px_60px_-40px_rgba(34,211,238,0.9)]'
+                    : 'text-slate-400 hover:text-slate-100'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsDemoSheetOpen(true)}
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-950/70 text-cyan-200 border border-cyan-400/40 text-xs font-medium transition-all hover:border-cyan-300/70 hover:text-white pill-glow"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Judge Demo Fixtures</span>
+            </button>
+            <button
+              onClick={() => {
+                setActiveTab('scan');
+                setScanResult(null);
+              }}
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 text-xs font-semibold transition-all hover:brightness-110"
+            >
+              <Camera className="w-3.5 h-3.5" />
+              <span>Report an Issue</span>
+            </button>
+          </div>
         </div>
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-5xl mx-auto p-4 sm:p-6 pb-24 md:pb-8 flex flex-col items-center">
+      <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-28 lg:pb-12 flex flex-col items-center">
         {/* Progressive Scan Loading Overlay */}
         {isScanning && <ScanProgressOverlay />}
 
         {/* 1. CAMERA / SCAN TAB */}
         {activeTab === 'scan' && (
-          <div className="w-full max-w-2xl flex flex-col items-center gap-5">
+          <div className="w-full max-w-3xl flex flex-col items-center gap-6">
             {!scanResult ? (
               /* Live Camera Capture */
-              <div className="w-full flex flex-col items-center gap-4">
+              <div className="w-full flex flex-col items-center gap-6">
+                <div className="w-full text-center space-y-3">
+                  <p className="text-[11px] font-mono uppercase tracking-[0.5em] text-cyan-300">Instant civic reporting</p>
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white text-balance">
+                    Point, capture, and report in seconds
+                  </h1>
+                  <p className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto text-balance">
+                    AI classifies the issue, scores severity, checks for duplicates, and drafts a multilingual complaint with zero forms.
+                  </p>
+                </div>
                 <CameraView
                   onCapture={handleCapture}
                   onOpenDemoSelector={() => setIsDemoSheetOpen(true)}
                   isScanning={isScanning}
                 />
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
+                  {[
+                    { title: 'Explainable AI', desc: 'Transparent severity rubric with SLA mapping' },
+                    { title: 'Duplicate moat', desc: 'Geospatial + visual + semantic fusion' },
+                    { title: 'Closing the loop', desc: 'Before/after verification for real fixes' },
+                  ].map((item) => (
+                    <div key={item.title} className="card-surface p-4 flex flex-col gap-1">
+                      <p className="text-sm font-medium text-white">{item.title}</p>
+                      <p className="text-xs text-slate-400">{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             ) : (
               /* Scan Result + Severity + Duplicate + Complaint Workflow */
@@ -360,9 +378,7 @@ export default function App() {
                       <DuplicateMergeModal
                         candidates={scanResult.duplicates}
                         onUpvoteAndMerge={handleUpvoteAndMerge}
-                        onProceedNew={() => {
-                          // Continue with distinct ticket flow
-                        }}
+                        onProceedNew={handleProceedAsNew}
                       />
                     )}
 
@@ -427,65 +443,37 @@ export default function App() {
         {activeTab === 'impact' && <ImpactView />}
       </main>
 
-      {/* Fixed Bottom Tab Bar for Mobile Touch Ergonomics (Pattern 1 from constitution) */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/90 backdrop-blur-md border-t border-slate-800 px-2 py-1 flex items-center justify-around h-16">
-        <button
-          onClick={() => {
-            setActiveTab('scan');
-            setScanResult(null);
-          }}
-          className={`flex flex-col items-center justify-center min-w-[56px] min-h-[44px] transition-colors ${
-            activeTab === 'scan' ? 'text-cyan-400' : 'text-slate-400'
-          }`}
-        >
-          <Camera className="w-5 h-5" />
-          <span className="text-[10px] font-medium tracking-tight mt-1">Scan</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab('map')}
-          className={`flex flex-col items-center justify-center min-w-[56px] min-h-[44px] transition-colors ${
-            activeTab === 'map' ? 'text-cyan-400' : 'text-slate-400'
-          }`}
-        >
-          <MapIcon className="w-5 h-5" />
-          <span className="text-[10px] font-medium tracking-tight mt-1">Ward Map</span>
-        </button>
-
-        <button
-          onClick={() => {
-            if (!activeTrackedReport && allReports.length > 0) {
-              setActiveTrackedReport(allReports[0]);
-            }
-            setActiveTab('tracker');
-          }}
-          className={`flex flex-col items-center justify-center min-w-[56px] min-h-[44px] transition-colors ${
-            activeTab === 'tracker' ? 'text-cyan-400' : 'text-slate-400'
-          }`}
-        >
-          <Clock className="w-5 h-5" />
-          <span className="text-[10px] font-medium tracking-tight mt-1">Tracker</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab('authority')}
-          className={`flex flex-col items-center justify-center min-w-[56px] min-h-[44px] transition-colors ${
-            activeTab === 'authority' ? 'text-cyan-400' : 'text-slate-400'
-          }`}
-        >
-          <Building className="w-5 h-5" />
-          <span className="text-[10px] font-medium tracking-tight mt-1">Authority</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab('impact')}
-          className={`flex flex-col items-center justify-center min-w-[56px] min-h-[44px] transition-colors ${
-            activeTab === 'impact' ? 'text-cyan-400' : 'text-slate-400'
-          }`}
-        >
-          <BarChart3 className="w-5 h-5" />
-          <span className="text-[10px] font-medium tracking-tight mt-1">Impact</span>
-        </button>
+      {/* Premium Mobile Tab Bar */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 glass-panel border-x-0 border-b-0 px-2 py-1.5 flex items-center justify-around h-[72px]">
+        {[
+          { id: 'scan' as NavigationTab, label: 'Report', icon: Camera },
+          { id: 'map' as NavigationTab, label: 'Map', icon: MapIcon },
+          { id: 'tracker' as NavigationTab, label: 'Tracker', icon: Clock },
+          { id: 'authority' as NavigationTab, label: 'Authority', icon: Building },
+          { id: 'impact' as NavigationTab, label: 'Impact', icon: BarChart3 },
+        ].map((item) => {
+          const Icon = item.icon;
+          return (
+            <button
+              key={item.id}
+              onClick={() => {
+                setActiveTab(item.id);
+                if (item.id === 'scan') setScanResult(null);
+                if (item.id === 'tracker' && !activeTrackedReport && allReports.length > 0) {
+                  setActiveTrackedReport(allReports[0]);
+                }
+              }}
+              className={`flex flex-col items-center justify-center min-w-[56px] min-h-[44px] rounded-2xl px-2 transition-all ${
+                activeTab === item.id
+                  ? 'text-cyan-300'
+                  : 'text-slate-500 hover:text-slate-200'
+              }`}
+            >
+              <Icon className="w-5 h-5" />
+              <span className="text-[10px] font-medium tracking-tight mt-1">{item.label}</span>
+            </button>
+          );
+        })}
       </div>
 
       {/* Demo Fixtures Bottom Sheet */}

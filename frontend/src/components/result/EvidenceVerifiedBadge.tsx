@@ -15,7 +15,7 @@ export const EvidenceVerifiedBadge: React.FC<EvidenceVerifiedBadgeProps> = ({ au
   if (!audit) return null;
 
   return (
-    <div className="w-full bg-slate-900/90 border border-emerald-500/30 rounded-2xl p-3.5 flex items-center justify-between shadow-md">
+    <div className="w-full card-surface-elevated overflow-hidden fade-in-up">
       <div className="flex items-center gap-3">
         <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
           <ShieldCheck className="w-4 h-4" />

@@ -53,7 +53,7 @@ export const SeverityBreakdown: React.FC<SeverityBreakdownProps> = ({ severity }
   ];
 
   return (
-    <div className="w-full bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl">
+    <div className="w-full card-surface-elevated overflow-hidden fade-in-up">
       {/* SLA Badge & Score Header */}
       <div className="flex items-center justify-between pb-3 border-b border-slate-800">
         <div className="flex items-center gap-2">
@@ -66,7 +66,7 @@ export const SeverityBreakdown: React.FC<SeverityBreakdownProps> = ({ severity }
       </div>
 
       {/* Main Score Hero */}
-      <div className="mt-4 flex items-center justify-between bg-slate-800/50 p-4 rounded-2xl border border-slate-700/50">
+      <div className="mt-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 sm:p-5 rounded-2xl bg-slate-950/60 border border-slate-700/50">
         <div>
           <div className="flex items-baseline gap-1.5">
             <span className="text-3xl font-extrabold text-white tracking-tight font-mono">
@@ -87,28 +87,28 @@ export const SeverityBreakdown: React.FC<SeverityBreakdownProps> = ({ severity }
       </div>
 
       {/* Transparent Breakdown Bars */}
-      <div className="mt-4 space-y-2.5">
-        <div className="flex justify-between text-[11px] font-mono text-slate-400">
-          <span>FACTOR WEIGHTING</span>
-          <span>SCORE (0-5)</span>
+      <div className="mt-6 space-y-3">
+        <div className="flex justify-between text-[11px] font-mono uppercase tracking-[0.4em] text-slate-500">
+          <span>Factor weighting</span>
+          <span>Score (0-5)</span>
         </div>
 
         {factors.map((f, i) => {
           const pct = Math.min(100, (f.score / f.max) * 100);
           return (
-            <div key={i} className="text-xs">
-              <div className="flex justify-between text-[11px] text-slate-300 mb-1">
-                <span>
-                  {f.label}{' '}
-                  <span className="text-slate-500 font-mono text-[10px]">({f.weight})</span>
+            <div key={i} className="text-sm">
+              <div className="flex items-center justify-between text-sm text-slate-300 mb-1.5">
+                <span className="flex items-center gap-2">
+                  {f.label}
+                  <span className="text-slate-500 font-mono text-[10px] uppercase tracking-[0.3em]">({f.weight})</span>
                 </span>
-                <span className="font-mono tabular-nums text-slate-200 font-medium">
+                <span className="font-mono tabular-nums text-slate-100">
                   {f.score.toFixed(1)} / 5.0
                 </span>
               </div>
-              <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+              <div className="w-full h-2 bg-slate-800/70 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-cyan-400 rounded-full transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-cyan-400 via-emerald-400 to-emerald-300 rounded-full transition-all duration-700"
                   style={{ width: `${pct}%` }}
                 />
               </div>

@@ -64,24 +64,31 @@ export const ScanProgressOverlay: React.FC<ScanProgressOverlayProps> = ({ curren
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
-      <div className="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl flex flex-col items-center">
-        {/* Animated Radar Pulse */}
-        <div className="relative w-20 h-20 mb-6 flex items-center justify-center">
-          <div className="absolute inset-0 rounded-full bg-cyan-500/10 animate-ping" />
-          <div className="absolute inset-2 rounded-full bg-cyan-500/20 animate-pulse" />
-          <div className="w-12 h-12 rounded-2xl bg-cyan-500/20 border border-cyan-400/50 flex items-center justify-center shadow-lg">
-            <span className="w-3 h-3 rounded-full bg-cyan-400 animate-pulse" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-xl">
+      <div className="w-full max-w-md card-surface overflow-hidden flex flex-col items-center fade-in-up">
+        <div className="relative w-full h-32">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.18),transparent)]" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="relative w-24 h-24 flex items-center justify-center">
+              <div className="absolute inset-0 rounded-full border border-cyan-400/30 animate-ping" />
+              <div className="absolute inset-2 rounded-full border border-emerald-400/20 animate-pulse" />
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-400/30 to-emerald-400/20 border border-cyan-300/60 flex items-center justify-center shadow-[0_60px_120px_-80px_rgba(34,211,238,0.9)]">
+                <span className="w-2.5 h-2.5 rounded-full bg-cyan-300 animate-pulse" />
+              </div>
+            </div>
           </div>
         </div>
 
-        <h3 className="text-lg font-semibold text-white tracking-tight mb-1">
-          Reality Scanner Active
-        </h3>
-        <p className="text-xs text-slate-400 mb-6">Autonomous Civic Perception Pipeline</p>
+        <div className="px-6 pb-6 text-center">
+          <p className="text-[11px] font-mono uppercase tracking-[0.5em] text-cyan-300">Reality Scanner Active</p>
+          <h3 className="text-xl sm:text-2xl font-semibold text-white tracking-tight mt-2">
+            Autonomous civic perception
+          </h3>
+          <p className="text-sm text-slate-400 mt-2">Perceiving, classifying, and routing your report with explainable AI.</p>
+        </div>
 
         {/* Step Items */}
-        <div className="w-full space-y-3">
+        <div className="w-full px-6 space-y-2">
           {STAGES.map((s) => {
             const Icon = s.icon;
             const isCompleted = activeStage > s.step;
@@ -90,34 +97,40 @@ export const ScanProgressOverlay: React.FC<ScanProgressOverlayProps> = ({ curren
             return (
               <div
                 key={s.step}
-                className={`flex items-start gap-3 p-3 rounded-xl transition-all duration-300 border ${
+                className={`flex items-start gap-3 p-3 rounded-2xl transition-all duration-500 border ${
                   isCurrent
-                    ? `${s.border} bg-slate-800/80 shadow-md`
+                    ? `${s.border} bg-slate-950/70 shadow-[0_40px_80px_-70px_rgba(34,211,238,0.9)]`
                     : isCompleted
-                    ? 'border-slate-800/50 bg-slate-900/50 opacity-60'
-                    : 'border-transparent opacity-30'
+                    ? 'border-emerald-400/30 bg-emerald-400/5'
+                    : 'border-slate-800/70 bg-slate-950/40'
                 }`}
               >
                 <div
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
-                    isCurrent ? 'bg-slate-800 ' + s.color : 'bg-slate-800 text-slate-400'
+                  className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                    isCurrent
+                      ? 'bg-gradient-to-br from-cyan-400/30 to-emerald-400/20 ' + s.color
+                      : isCompleted
+                      ? 'bg-emerald-400/15 text-emerald-300'
+                      : 'bg-slate-900 text-slate-500'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium text-slate-200">{s.title}</span>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className={`text-sm font-medium ${isCurrent ? 'text-white' : isCompleted ? 'text-slate-200' : 'text-slate-400'}`}>
+                      {s.title}
+                    </span>
                     {isCompleted && (
-                      <span className="text-[10px] text-emerald-400 font-mono">DONE</span>
+                      <span className="text-[10px] text-emerald-300 font-mono uppercase tracking-[0.3em]">Done</span>
                     )}
                     {isCurrent && (
-                      <span className="text-[10px] text-cyan-400 font-mono animate-pulse">
-                        RUNNING
+                      <span className="text-[10px] text-cyan-300 font-mono uppercase tracking-[0.3em] animate-pulse">
+                        Running
                       </span>
                     )}
                   </div>
-                  <p className="text-[11px] text-slate-400 truncate mt-0.5">{s.subtitle}</p>
+                  <p className={`text-xs mt-1 ${isCurrent ? 'text-slate-300' : 'text-slate-500'}`}>{s.subtitle}</p>
                 </div>
               </div>
             );
@@ -125,8 +138,8 @@ export const ScanProgressOverlay: React.FC<ScanProgressOverlayProps> = ({ curren
         </div>
 
         {/* Latency Guarantee Notice */}
-        <div className="mt-6 text-[10px] text-slate-500 font-mono text-center">
-          SUB-4s INFERENCE · EXPLAINABLE WEIGHTS · ZERO FORMS
+        <div className="mt-6 mb-2 px-6 text-[11px] text-slate-500 font-mono text-center uppercase tracking-[0.4em]">
+          Sub-4s inference · Explainable weights · Zero forms
         </div>
       </div>
     </div>

@@ -190,7 +190,7 @@ export const CameraView: React.FC<CameraViewProps> = ({
   };
 
   return (
-    <div className="relative w-full h-[calc(100vh-140px)] min-h-[500px] max-h-[820px] bg-slate-950 overflow-hidden flex flex-col justify-between select-none">
+    <div className="relative w-full h-[70vh] min-h-[520px] max-h-[820px] rounded-[2rem] overflow-hidden card-surface border border-slate-800/80 shadow-[0_80px_160px_-120px_rgba(34,211,238,0.4)] flex flex-col justify-between select-none">
       {/* Live Video Feed or Fallback */}
       <div className="absolute inset-0 z-0">
         {!cameraError ? (
@@ -202,20 +202,22 @@ export const CameraView: React.FC<CameraViewProps> = ({
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-slate-900/90">
-            <Camera className="w-12 h-12 text-slate-500 mb-3" />
-            <p className="text-slate-300 text-sm max-w-xs mb-4">{cameraError}</p>
-            <div className="flex gap-2">
+          <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-slate-900/90 to-slate-950/95">
+            <div className="w-14 h-14 rounded-2xl bg-slate-950/70 border border-slate-800/80 flex items-center justify-center mb-4">
+              <Camera className="w-6 h-6 text-slate-400" />
+            </div>
+            <p className="text-slate-300 text-sm max-w-xs mb-5">{cameraError}</p>
+            <div className="flex flex-wrap items-center justify-center gap-2">
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium rounded-lg flex items-center gap-2 border border-slate-700"
+                className="px-4 py-2 rounded-full bg-slate-950/70 text-slate-200 text-xs font-medium flex items-center gap-2 border border-slate-800/80 hover:border-cyan-400/40 hover:text-white transition-all"
               >
                 <Upload className="w-3.5 h-3.5" />
                 Upload Photo
               </button>
               <button
                 onClick={onOpenDemoSelector}
-                className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-medium rounded-lg flex items-center gap-2 shadow-sm"
+                className="px-4 py-2 rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 text-xs font-semibold flex items-center gap-2 transition-all hover:brightness-110"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 Demo Fixtures
@@ -226,41 +228,38 @@ export const CameraView: React.FC<CameraViewProps> = ({
       </div>
 
       {/* HUD Reticle Overlay */}
-      <div className="absolute inset-0 pointer-events-none z-10 flex flex-col justify-between p-4">
+      <div className="absolute inset-0 pointer-events-none z-10 flex flex-col justify-between p-4 sm:p-6">
         {/* Top HUD Telemetry Bar */}
-        <div className="flex items-center justify-between text-[11px] text-slate-300 font-mono tracking-tight bg-slate-950/60 backdrop-blur-md px-3 py-2 rounded-xl border border-slate-800/80">
+        <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-300 font-mono tracking-tight glass-panel px-3 py-2 rounded-2xl">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>REALITY SCANNER HUD</span>
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-300"></span>
+            </span>
+            <span className="uppercase tracking-[0.4em]">Reality Scanner HUD</span>
           </div>
           <div className="flex items-center gap-3 tabular-nums">
-            <span className="flex items-center gap-1">
-              <Navigation className="w-3 h-3 text-cyan-400 transform" style={{ transform: `rotate(${heading}deg)` }} />
+            <span className="flex items-center gap-1.5">
+              <Navigation className="w-3 h-3 text-cyan-300 transform" style={{ transform: `rotate(${heading}deg)` }} />
               {heading}°
             </span>
-            <span>{gps.latitude.toFixed(4)}°N, {gps.longitude.toFixed(4)}°E</span>
+            <span className="hidden sm:inline">{gps.latitude.toFixed(4)}°N, {gps.longitude.toFixed(4)}°E</span>
           </div>
         </div>
 
         {/* Center Reticle Brackets */}
-        <div className="relative mx-auto my-auto w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center">
-          {/* Top-Left Corner */}
-          <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-400 rounded-tl-lg" />
-          {/* Top-Right Corner */}
-          <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-cyan-400 rounded-tr-lg" />
-          {/* Bottom-Left Corner */}
-          <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-cyan-400 rounded-bl-lg" />
-          {/* Bottom-Right Corner */}
-          <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-cyan-400 rounded-br-lg" />
+        <div className="relative mx-auto my-auto w-64 h-64 sm:w-80 sm:h-80 flex items-center justify-center">
+          <div className="absolute top-0 left-0 w-10 h-10 border-t-2 border-l-2 border-cyan-300 rounded-tl-3xl" />
+          <div className="absolute top-0 right-0 w-10 h-10 border-t-2 border-r-2 border-cyan-300 rounded-tr-3xl" />
+          <div className="absolute bottom-0 left-0 w-10 h-10 border-b-2 border-l-2 border-cyan-300 rounded-bl-3xl" />
+          <div className="absolute bottom-0 right-0 w-10 h-10 border-b-2 border-r-2 border-cyan-300 rounded-br-3xl" />
 
-          {/* Crosshair & Aim Guide */}
-          <div className="w-2.5 h-2.5 rounded-full bg-cyan-400/80 shadow-sm shadow-cyan-400" />
-          <div className="absolute top-1/2 left-4 right-4 h-[1px] bg-cyan-400/20" />
-          <div className="absolute left-1/2 top-4 bottom-4 w-[1px] bg-cyan-400/20" />
+          <div className="w-3 h-3 rounded-full bg-cyan-300/90 shadow-[0_0_80px_rgba(34,211,238,0.6)]" />
+          <div className="absolute top-1/2 left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-cyan-300/40 to-transparent" />
+          <div className="absolute left-1/2 top-6 bottom-6 w-[1px] bg-gradient-to-b from-transparent via-cyan-300/40 to-transparent" />
 
-          {/* Dynamic Aim Guidance */}
-          <div className="absolute -bottom-8 px-3 py-1 bg-slate-950/80 rounded-full border border-slate-800 text-[11px] text-slate-300 font-sans tracking-wide">
-            Center defect inside reticle · Point & hold
+          <div className="absolute -bottom-10 px-4 py-1.5 glass-panel rounded-full text-[11px] text-slate-200 font-sans tracking-wide">
+            Center the defect inside the frame
           </div>
         </div>
 
