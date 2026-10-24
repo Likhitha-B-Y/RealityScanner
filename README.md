@@ -4,20 +4,65 @@
 
 ---
 
-## ⚡ Quick Start (Run with npm)
+## 💡 What It Does
+
+Citizens abandon most civic complaints because municipal portals demand minutes of form-filling, and the same pothole ends up reported dozens of times. **Reality Scanner** replaces the form with a camera:
+
+1. **Point** your phone at a defect (pothole, garbage, broken streetlight, etc.). Gemini's multimodal AI classifies it and measures visible hazards.
+2. **Score** it with a transparent, explainable severity rubric (P1-P4) and an SLA deadline.
+3. **Deduplicate** it against nearby tickets using geospatial, visual and semantic signals, so you can upvote an existing ticket instead of creating a redundant one.
+4. **Generate** a formal complaint in **English, Hindi and Kannada**, routed to the right municipal department.
+5. **Close the loop** with AI before/after verification, so tickets can't be closed without a genuine fix.
+
+---
+
+## ⚡ Quick Start
+
+**Prerequisites:** Node.js 18+ and a free [Gemini API key](https://aistudio.google.com/apikey).
 
 ```bash
 # 1. Install dependencies
 npm install
 
-# 2. Run the development server (runs full-stack Express + Vite on port 3000)
-npm run dev
+# 2. Add your API key
+cp .env.example .env          # Windows: copy .env.example .env
+# open .env and set GEMINI_API_KEY=your_key_here
 
-# 3. Build for production
+# 3. Run the full-stack dev server (Express + Vite)
+npm run dev
+```
+
+Then open **http://localhost:3000** in your browser.
+(Don't use `0.0.0.0:3000`. Browsers can't open that address.)
+
+```bash
+# Build for production
 npm run build
 ```
 
+**Trying it without a camera:** open the app and tap **Judge Demo Fixtures** to run the full pipeline on prepared sample images.
+
 ---
+
+## 🖼️ Screenshots
+
+## 🖼️ Screenshots
+
+| Scanner | Judge Demo Scenarios |
+| :---: | :---: |
+| ![Scanner](docs/screenshots/scanner.png) | ![Demo scenarios](docs/screenshots/demo-scenarios.png) |
+
+| Ticket Tracker | Authority Dashboard |
+| :---: | :---: |
+| ![Ticket](docs/screenshots/ticket.png) | ![Authority](docs/screenshots/authority.png) |
+
+| Impact |
+| :---: |
+| ![Impact](docs/screenshots/impact.png) |
+
+| Multilingual Complaint |
+| :---: |
+| ![Complaint](docs/screenshots/complaint.png) |
 
 ## 🏛️ System Architecture
 
@@ -42,29 +87,39 @@ graph TD
 
 ---
 
-## ⏱️ 3-Minute Live Hackathon Demo Script
+## 🧠 What Makes It Different
 
-| Time | Step | Screen / Action | What Judges See & Hear |
-| :---: | :---: | :--- | :--- |
-| **0:00 - 0:35** | **The Hook & Problem** | Home Scanner screen | *"Citizens abandon 80% of civic complaints because municipal portals demand 5 minutes of form-filling. Reality Scanner takes 5 seconds."* |
-| **0:35 - 1:15** | **Point & Instant Perception** | Tap **Judge Demo Fixtures** $\to$ **1. Pothole (100ft Road)** | Watch 4-stage progressive HUD: Perception $\to$ Severity $\to$ Duplicate $\to$ Complaint. AI extracts metric dimensions (`72cm diameter, 11cm depth`) and visible hazards. |
-| **1:15 - 1:55** | **The Duplicate Moat** | Tap **Judge Demo Fixtures** $\to$ **2. Pothole (Angle B)** | Demonstrates the technical moat: captures the same pothole from opposite angle 16m away. System catches it with 94% probability, offering *"Add Evidence & Upvote"* rather than cluttering municipal dispatch with redundant tickets. |
-| **1:55 - 2:25** | **Multilingual Complaints & SLA** | Complaint Preview card | Switch language toggle between **English**, **Hindi**, and **Kannada**. View the formal municipal letter citing Karnataka Sakala Citizen Charter, ready with 1-tap submission. |
-| **2:25 - 2:45** | **Authority Queue & Closing the Loop** | Tap **Authority** tab | Show municipal queue sorted by SLA deadline. Open a resolved ticket and drag the **Before/After slider** showing Gemini Vision's verified road repair inspection. |
-| **2:45 - 3:00** | **Civic Impact & Business Model** | Tap **Impact** tab | 73% duplicate inbox reduction, B2G per-ward SaaS licensing ($1,800/ward/year). End pitch. |
+- **Duplicate Moat (Stage C):** fuses Haversine geospatial radius, perceptual visual similarity and semantic description overlap, so the same defect photographed from another angle is still caught.
+- **Explainable severity (Stage B):** transparent weighted rubric, `H×0.35 + F×0.25 + S×0.20 + W×0.10 + D×0.10`, so authorities can see *why* a ticket is P1 or P3.
+- **Tamper-evident evidence (Stage D):** every capture is sealed with a SHA-256 hash for auditing.
+- **Refusal handling (Stage A):** images that don't show a valid civic defect are refused rather than turned into tickets (see `docs/AI_PIPELINE.md` for thresholds and failure modes).
+- **Closing the loop (Stage G):** AI before/after verification of repairs.
 
 ---
 
-## 📊 8-Slide Pitch Deck Outline
+## ⏱️ 3-Minute Demo Walkthrough
 
-1. **Slide 1 - Title & Problem**: The Broken Civic Reporting Funnel (5-minute forms, 80% citizen dropoff, thousands of redundant duplicate tickets).
-2. **Slide 2 - The Insight**: Computer vision + multi-signal deduplication can eliminate all manual forms while improving complaint data quality.
-3. **Slide 3 - Live Demo**: Point phone camera at defect $\to$ verified ticket with SLA countdown in 4.2 seconds.
-4. **Slide 4 - Technical Moat (Stage C Deduplication)**: Multi-signal fusion combining Haversine geospatial radius, perceptual visual embeddings, and semantic description overlap.
-5. **Slide 5 - Explainable AI (Stage B & D)**: Transparent severity scoring ($H \times 0.35 + F \times 0.25 + S \times 0.20 + W \times 0.10 + D \times 0.10$) and SHA-256 tamper-proof evidence auditing.
-6. **Slide 6 - Closing the Loop (Stage G)**: AI before/after photo verification ensuring municipal contractors cannot close tickets without genuine fixes.
-7. **Slide 7 - Civic Impact & Benchmarks**: 96% classification accuracy, 73.2% duplicate noise reduction, tested across 150+ realistic ward records.
-8. **Slide 8 - B2G SaaS Business Model & Roadmap**: Per-ward licensing model (₹1.5 Lakh/ward/year) for urban local bodies (BBMP, BMC, MCD). Expansion into automated dashcam patrols and predictive road maintenance.
+| Time | Step | Screen / Action | What You See |
+| :---: | :---: | :--- | :--- |
+| **0:00 - 0:35** | **Problem** | Home Scanner screen | Civic complaints are abandoned because portals demand long forms. Reality Scanner takes seconds. |
+| **0:35 - 1:15** | **Instant Perception** | **Judge Demo Fixtures** → **1. Pothole (100ft Road)** | 4-stage progressive HUD: Perception → Severity → Duplicate → Complaint. AI extracts dimensions (`72cm diameter, 11cm depth`) and visible hazards. |
+| **1:15 - 1:55** | **Duplicate Moat** | **Judge Demo Fixtures** → **2. Pothole (Angle B)** | The same pothole from the opposite angle, 16m away, is caught with ~94% match probability. The app offers *"Add Evidence & Upvote"* instead of filing a redundant ticket. |
+| **1:55 - 2:25** | **Multilingual Complaint & SLA** | Complaint Preview card | Toggle **English / Hindi / Kannada**. A formal municipal letter citing the Karnataka Sakala Citizen Charter, ready for 1-tap submission. |
+| **2:25 - 2:45** | **Authority Queue** | **Authority** tab | Queue sorted by SLA deadline. Open a resolved ticket and drag the **Before/After slider**. |
+| **2:45 - 3:00** | **Impact & Business Model** | **Impact** tab | Duplicate inbox reduction and the B2G per-ward licensing model. |
+
+---
+
+## 📊 Pitch Outline
+
+1. **Title & Problem:** the broken civic reporting funnel (long forms, high citizen dropoff, redundant duplicate tickets).
+2. **The Insight:** computer vision + multi-signal deduplication can remove manual forms while improving complaint data quality.
+3. **Live Demo:** point at a defect → verified ticket with SLA countdown in seconds.
+4. **Technical Moat (Stage C):** Haversine geospatial radius + visual embeddings + semantic overlap.
+5. **Explainable AI (Stages B & D):** transparent severity scoring and SHA-256 evidence auditing.
+6. **Closing the Loop (Stage G):** AI before/after verification so tickets can't be closed without a real fix.
+7. **Impact & Benchmarks:** results on our demo dataset (see `docs/EVALUATION.md` for the method): ~96% classification accuracy and ~73% duplicate noise reduction.
+8. **Business Model & Roadmap:** per-ward B2G licensing (~₹1.5 Lakh / ~$1,800 per ward per year) for urban local bodies (BBMP, BMC, MCD). Next: automated dashcam patrols and predictive road maintenance.
 
 ---
 
@@ -72,5 +127,19 @@ graph TD
 
 - `/backend`: Express API, Gemini multimodal AI pipeline (Stages A through G), SQLite spatial database, and routing rules.
 - `/frontend`: React 19 + Tailwind + Lucide PWA, camera HUD, Leaflet interactive map, multilingual generator, and authority command center.
-- `/docs/AI_PIPELINE.md`: In-depth specification of prompts, thresholds, and failure modes.
+- `/docs/AI_PIPELINE.md`: prompts, thresholds, and failure modes.
 - `/docs/EVALUATION.md`: 50-image benchmark precision & recall report.
+
+---
+
+## ⚠️ Current Limitations
+
+- Demo data (`reports_db.json`) and fixtures are sample data for demonstration, not live municipal records.
+- Municipal submission is simulated; there is no live integration with a city portal yet.
+- AI results depend on the Gemini API and image quality.
+
+---
+
+## 🙏 Credits & Third-Party Resources
+
+Google Gemini API (multimodal AI), React, Vite, Tailwind CSS, Leaflet, Lucide Icons, Express, and the Google AI Studio repository template. All project logic, pipeline design and UI were built by our team.

@@ -63,7 +63,7 @@ export async function createFullStackServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`[Reality Scanner] Server running on http://0.0.0.0:${PORT}`);
+    console.log(`[Reality Scanner] Server running on http://localhost:${PORT}`);
   });
 
   return app;
