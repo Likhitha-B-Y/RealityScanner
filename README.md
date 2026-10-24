@@ -54,7 +54,7 @@ npm run build
 
 | Ticket Tracker | Authority Dashboard |
 | :---: | :---: |
-| ![Ticket](docs/screenshots/ticket.png) | ![Authority](docs/screenshots/authority.png) |
+| ![Ticket](docs/screenshots/Ticket.png) | ![Authority](docs/screenshots/authority.png) |
 
 | Impact |
 | :---: |
@@ -62,7 +62,7 @@ npm run build
 
 | Multilingual Complaint |
 | :---: |
-| ![Complaint](docs/screenshots/complaint.png) |
+| ![Complaint](docs/screenshots/Complaint.png) |
 
 ## 🏛️ System Architecture
 
